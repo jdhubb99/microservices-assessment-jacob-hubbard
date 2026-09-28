@@ -56,10 +56,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ProblemDetail handleDataIntegrity(DataIntegrityViolationException ex) {
         log.warn("Data integrity violation: {}", ex.getMostSpecificCause().getMessage());
 
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                HttpStatus.CONFLICT,
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT,
                 "The request conflicts with existing data or violates a data constraint.");
         problem.setTitle("Data integrity violation");
+        return problem;
+    }
+
+    @ExceptionHandler(InvalidTenantHeaderException.class)
+    public ProblemDetail handleInvalidTenantHeader(InvalidTenantHeaderException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+        problem.setTitle("Invalid tenant header");
+        return problem;
+    }
+
+    @ExceptionHandler(TenantAccessDeniedException.class)
+    public ProblemDetail handleTenantAccessDenied(TenantAccessDeniedException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage()  );
+        problem.setTitle("Tenant access denied");
         return problem;
     }
 }
