@@ -44,7 +44,7 @@ public class OrderController {
         return orderService.updateOrderStatus(orderId, request.status());
     }
 
-    @PostMapping("/{id}/cancel")
+    @PostMapping("/{orderId}/cancel")
     public OrderResponse cancelOrder(@PathVariable UUID orderId, @RequestBody(required = false) CancelOrderRequest request) {
         String reason = request != null ? request.reason() : null;
         return orderService.cancelOrder(orderId, reason);
