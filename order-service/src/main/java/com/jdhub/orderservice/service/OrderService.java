@@ -6,6 +6,8 @@ import com.jdhub.orderservice.entity.Order;
 import com.jdhub.orderservice.entity.enums.OrderStatus;
 import com.jdhub.orderservice.exception.OrderNotFoundException;
 import com.jdhub.orderservice.repository.OrderRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +34,11 @@ public class OrderService {
     public OrderResponse getOrder(UUID orderId) {
         Order existingOrder = findOrderOrThrow(orderId);
         return OrderResponse.from(existingOrder);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<OrderResponse> getOrders(Pageable pageable) {
+        return orderRepository.findAll(pageable).map(OrderResponse::from);
     }
 
     @Transactional

@@ -1,10 +1,10 @@
 package com.jdhub.orderservice.controller;
 
-import com.jdhub.orderservice.dto.CancelOrderRequest;
-import com.jdhub.orderservice.dto.CreateOrderRequest;
-import com.jdhub.orderservice.dto.OrderResponse;
-import com.jdhub.orderservice.dto.UpdateOrderRequest;
+import com.jdhub.orderservice.dto.*;
 import com.jdhub.orderservice.service.OrderService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +31,12 @@ public class OrderController {
     @GetMapping("/{orderId}")
     public OrderResponse getOrder(@PathVariable UUID orderId) {
         return orderService.getOrder(orderId);
+    }
+
+    @GetMapping
+    public PageResponse<OrderResponse> getOrders(
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        return PageResponse.from(orderService.getOrders(pageable));
     }
 
     @PatchMapping("/{orderId}/status")
