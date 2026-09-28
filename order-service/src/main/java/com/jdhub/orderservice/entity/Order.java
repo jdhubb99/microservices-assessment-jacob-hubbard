@@ -50,7 +50,7 @@ public class Order {
         Objects.requireNonNull(customerId, "customerId is required");
         Objects.requireNonNull(customerEmail, "customerEmail is required");
         Objects.requireNonNull(currency, "current is required");
-        Objects.requireNonNull(totalAmount, "total_amount is required");
+        Objects.requireNonNull(totalAmount, "totalAmount is required");
 
         return new Order(customerId, customerEmail, currency, totalAmount);
     }

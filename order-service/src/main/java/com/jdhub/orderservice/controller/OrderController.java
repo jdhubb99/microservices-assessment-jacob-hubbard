@@ -6,13 +6,13 @@ import com.jdhub.orderservice.dto.OrderResponse;
 import com.jdhub.orderservice.dto.UpdateOrderRequest;
 import com.jdhub.orderservice.service.OrderService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.UUID;
 
-@Controller("/api/v1/orders")
+@RestController
+@RequestMapping("/api/v1/orders")
 public class OrderController {
 
     private final OrderService orderService;
