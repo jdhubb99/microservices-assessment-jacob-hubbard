@@ -13,9 +13,9 @@ public class TenantIdentifierResolver implements CurrentTenantIdentifierResolver
 
     @Override
     public UUID resolveCurrentTenantIdentifier() {
-        UUID tenantId = TenantContext.get() != null ? TenantContext.get() : DEFAULT_TENANT;
+        UUID tenantId = TenantContext.get();
         log.info("Resolving current tenant identifier: {}", tenantId);
-        return tenantId;
+        return tenantId != null ? tenantId : DEFAULT_TENANT;
     }
 
     @Override
