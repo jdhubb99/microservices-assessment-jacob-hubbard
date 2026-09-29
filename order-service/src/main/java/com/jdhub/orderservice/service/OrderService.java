@@ -5,6 +5,8 @@ import com.jdhub.orderservice.dto.OrderResponse;
 import com.jdhub.orderservice.entity.Order;
 import com.jdhub.orderservice.entity.enums.OrderStatus;
 import com.jdhub.orderservice.exception.OrderNotFoundException;
+import com.jdhub.orderservice.messaging.OrderEvent;
+import com.jdhub.orderservice.messaging.OrderEventPublisher;
 import com.jdhub.orderservice.repository.OrderRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,16 +18,19 @@ import java.util.UUID;
 @Service
 public class OrderService {
     private final OrderRepository orderRepository;
+    private final OrderEventPublisher orderEventPublisher;
 
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, OrderEventPublisher orderEventPublisher) {
        this.orderRepository = orderRepository;
+       this.orderEventPublisher = orderEventPublisher;
     }
 
     @Transactional
     public OrderResponse createOrder(CreateOrderRequest payload) {
         Order newOrder = Order.create(payload.customerId(), payload.customerEmail(), payload.currency(), payload.totalAmount());
-        orderRepository.saveAndFlush(newOrder);
-        // TODO: add event publishing
+
+        Order savedOrder = orderRepository.saveAndFlush(newOrder);
+        orderEventPublisher.publish(OrderEvent.created(savedOrder));
 
         return OrderResponse.from(newOrder);
     }
@@ -44,19 +49,23 @@ public class OrderService {
     @Transactional
     public OrderResponse updateOrderStatus(UUID orderId, OrderStatus newStatus) {
         Order existingOrder = findOrderOrThrow(orderId);
+        OrderStatus previousStatus = existingOrder.getStatus();
         existingOrder.transitionTo(newStatus);
-        orderRepository.saveAndFlush(existingOrder);
 
-        // TODO: add event publishing
+        Order savedOrder = orderRepository.saveAndFlush(existingOrder);
+        orderEventPublisher.publish(OrderEvent.statusChanged(savedOrder, previousStatus));
+
         return OrderResponse.from(existingOrder);
     }
 
     @Transactional
     public OrderResponse cancelOrder(UUID orderId, String cancellationReason) {
         Order existingOrder = findOrderOrThrow(orderId);
+        OrderStatus previousStatus = existingOrder.getStatus();
         existingOrder.cancel(cancellationReason);
-        orderRepository.saveAndFlush(existingOrder);
-        // TODO: add event publishing
+
+        Order savedOrder = orderRepository.saveAndFlush(existingOrder);
+        orderEventPublisher.publish(OrderEvent.statusChanged(savedOrder, previousStatus));
 
         return OrderResponse.from(existingOrder);
     }
