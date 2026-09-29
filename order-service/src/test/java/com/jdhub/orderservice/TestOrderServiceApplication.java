@@ -1,5 +1,6 @@
 package com.jdhub.orderservice;
 
+import com.jdhub.orderservice.config.TestcontainersConfiguration;
 import org.springframework.boot.SpringApplication;
 
 public class TestOrderServiceApplication {

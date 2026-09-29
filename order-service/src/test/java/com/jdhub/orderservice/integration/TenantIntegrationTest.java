@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-public class TenantIntegrationTest extends AbstractIntegrationTest {
+class TenantIntegrationTest extends AbstractIntegrationTest {
 
     private static final String TENANT_A = "11111111-1111-1111-1111-111111111111";
     private static final String TENANT_B = "22222222-2222-2222-2222-222222222222";
