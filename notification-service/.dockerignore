@@ -1,0 +1,11 @@
+# .dockerignore - Files to exclude from the build context
+.git/
+.gitignore
+.idea/
+*.iml
+target
+!target/*.jar
+node_modules
+*.md
+docker-compose*.yml
+.env
