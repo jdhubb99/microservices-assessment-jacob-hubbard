@@ -10,11 +10,10 @@ import java.util.UUID;
 @Component
 public class TenantIdentifierResolver implements CurrentTenantIdentifierResolver<UUID> {
     private static final UUID DEFAULT_TENANT = new UUID(0L, 0L);
-    private static final ThreadLocal<UUID> CONTEXT = new ThreadLocal<>();
 
     @Override
     public UUID resolveCurrentTenantIdentifier() {
-        UUID tenantId = CONTEXT.get() != null ? CONTEXT.get() : DEFAULT_TENANT;
+        UUID tenantId = TenantContext.get() != null ? TenantContext.get() : DEFAULT_TENANT;
         log.info("Resolving current tenant identifier: {}", tenantId);
         return tenantId;
     }
@@ -24,11 +23,4 @@ public class TenantIdentifierResolver implements CurrentTenantIdentifierResolver
         return true;
     }
 
-    public static void setTenantId(UUID tenantId) {
-        CONTEXT.set(tenantId);
-    }
-
-    public static void clear() {
-        CONTEXT.remove();
-    }
 }

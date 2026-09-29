@@ -49,10 +49,10 @@ public class TenantFilter extends OncePerRequestFilter {
         }
 
         try {
-            TenantIdentifierResolver.setTenantId(tenantId);
+            TenantContext.set(tenantId);
             filterChain.doFilter(request, response);
         } finally {
-            TenantIdentifierResolver.clear();
+            TenantContext.clear();
         }
     }
 
