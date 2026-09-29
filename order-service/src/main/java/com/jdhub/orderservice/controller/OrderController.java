@@ -2,6 +2,7 @@ package com.jdhub.orderservice.controller;
 
 import com.jdhub.orderservice.dto.*;
 import com.jdhub.orderservice.service.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -22,7 +23,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderResponse> createOrder(@RequestBody CreateOrderRequest request) {
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody @Valid CreateOrderRequest request) {
             OrderResponse newOrder = orderService.createOrder(request);
             URI location = URI.create("/api/v1/orders/" + newOrder.id());
             return ResponseEntity.created(location).body(newOrder);
@@ -40,12 +41,12 @@ public class OrderController {
     }
 
     @PatchMapping("/{orderId}/status")
-    public OrderResponse updateOrderStatus(@PathVariable UUID orderId, @RequestBody UpdateOrderRequest request) {
+    public OrderResponse updateOrderStatus(@PathVariable UUID orderId, @RequestBody @Valid UpdateOrderRequest request) {
         return orderService.updateOrderStatus(orderId, request.status());
     }
 
     @PostMapping("/{orderId}/cancel")
-    public OrderResponse cancelOrder(@PathVariable UUID orderId, @RequestBody(required = false) CancelOrderRequest request) {
+    public OrderResponse cancelOrder(@PathVariable UUID orderId, @RequestBody(required = false) @Valid CancelOrderRequest request) {
         String reason = request != null ? request.reason() : null;
         return orderService.cancelOrder(orderId, reason);
     }
