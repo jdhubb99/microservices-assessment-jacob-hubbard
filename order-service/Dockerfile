@@ -22,7 +22,7 @@ COPY --from=builder /app/target/*.jar app.jar
 
 USER appuser
 
-EXPOSE 8081
+EXPOSE 8080
 
 # Set JVM flags for container-aware memory management
 ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]
