@@ -65,9 +65,9 @@ flowchart LR
 
 ### DB Schemas
 
-<img alt="Screenshot 2026-09-29 at 21.34.23.jpg" height="300" src="../../../Desktop/Screenshot%202026-09-29%20at%2021.34.23.jpg" width=""/>
+<img width="" height="300" alt="Screenshot 2026-09-29 at 21 34 23" src="https://github.com/user-attachments/assets/dab48ec6-2f69-4030-9cb9-de03e6cc0ec4" />
+<img width="" height="300" alt="Screenshot 2026-09-29 at 21 34 45" src="https://github.com/user-attachments/assets/721cdd95-e1b8-4c39-af13-552de8a77993" />
 
-<img alt="Screenshot 2026-09-29 at 21.34.45.jpg" height="300" src="../../../Desktop/Screenshot%202026-09-29%20at%2021.34.45.jpg"/>
 
 ### Service communication
 
