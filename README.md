@@ -63,6 +63,12 @@ flowchart LR
     listener -. "invalid or failed after retries" .-> dlt
 ```
 
+### DB Schemas
+
+<img alt="Screenshot 2026-09-29 at 21.34.23.jpg" height="300" src="../../../Desktop/Screenshot%202026-09-29%20at%2021.34.23.jpg" width=""/>
+
+<img alt="Screenshot 2026-09-29 at 21.34.45.jpg" height="300" src="../../../Desktop/Screenshot%202026-09-29%20at%2021.34.45.jpg"/>
+
 ### Service communication
 
 * **Order Service:** Exposes HTTP CRUD endpoints for an external system to interface with to create, update, and cancel ecommerce orders for each tenant within the platform.
