@@ -22,12 +22,4 @@ public class KafkaConfig {
         handler.addNotRetryableExceptions(InvalidEventException.class);
         return handler;
     }
-
-    @Bean
-    public NewTopic orderEventsDeadLetterTopic(@Value("${app.kafka.topics.order-events}") String topic) {
-        return TopicBuilder.name(topic + ".DLT")
-                .partitions(3)
-                .replicas(1)
-                .build();
-    }
 }
