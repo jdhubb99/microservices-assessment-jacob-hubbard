@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class TenantIntegrationTest extends AbstractIntegrationTest {
 
-    private static final String TENANT_A = "11111111-1111-1111-1111-111111111111";
+    static final String TENANT_A = "11111111-1111-1111-1111-111111111111";
     private static final String TENANT_B = "22222222-2222-2222-2222-222222222222";
     private static final String SUSPENDED_TENANT = "33333333-3333-3333-3333-333333333333";
     private static final String CREATE_ORDER_JSON = """
@@ -194,6 +194,22 @@ class TenantIntegrationTest extends AbstractIntegrationTest {
                         .content(CREATE_ORDER_JSON))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.title").value("Tenant access denied"));
+    }
+
+    @Test
+    void testStatusEndpointRejectsCancellation() throws Exception {
+        String orderId = createOrder(TENANT_A);
+
+        mockMvc.perform(patch("/api/v1/orders/{id}/status", orderId)
+                        .header("X-Tenant-ID", TENANT_A)
+                        .contentType(String.valueOf(MediaType.APPLICATION_JSON))
+                        .content("""
+                                    { "status": "CANCELLED" }
+                                """))
+                .andExpect(status().isBadRequest());
+
+        mockMvc.perform(get("/api/v1/orders/{id}", orderId).header("X-Tenant-ID", TENANT_A))
+                .andExpect(jsonPath("$.status").value("PENDING"));
     }
 
     private String createOrder(String tenantId) throws Exception {
